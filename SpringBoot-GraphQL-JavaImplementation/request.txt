@@ -1,0 +1,38 @@
+1) REST API: POST:http://localhost:9191/addPerson
+---------------------------------------------------
+[
+    {
+    "id":4,
+    "name":"rakesh",
+    "mobile":"9999999999",
+    "email":"rakesh@gmail.com",
+    "address":["Bangalore", "BTM","house No-45"]
+
+},
+{
+    "id":7,
+    "name":"roshan",
+    "mobile":"7777777777",
+    "email":"roshan@gmail.com",
+    "address":["Chennai", "Annanagar","house No-45"]
+
+}
+]
+
+2) Graphql: POST:http://localhost:9191/getAll
+-------------------------------------------
+{
+    getAllPerson{
+        name
+        email
+    }
+}
+
+3) Graphql: POST: http://localhost:9191/getPersonByEmail
+----------------------------------------------------------
+{
+    findPerson(email:"rakesh@gmail.com"){
+        name
+        email
+    }
+}
