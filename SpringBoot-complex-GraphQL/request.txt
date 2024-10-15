@@ -1,0 +1,77 @@
+================== H2===============
+http://localhost:
+
+=========== REST ==========================
+1) POST : http://localhost:9090/books
+    {
+        "title": "MongoDB book",
+        "desc": "database stating",
+        "price": 1700.0,
+        "author": "Kaitee",
+        "pages": 920
+    }
+2) GET : http://localhost:9090/books
+
+3) GET: http://localhost:9090/books/1
+
+
+============== GraphQL =======================
+1) QUERY POST: http://localhost:9090/graphql
+        query{
+            allBooks{
+                id
+                title
+            }
+        }
+
+
+2) QUERY POST: http://localhost:9090/graphql (getBookById(bookId:Int):BookOutput)
+            query{
+              getBookById(bookId:1){
+                id
+                title
+              }
+            }
+
+3) Mutation POST: http://localhost:9090/graphql
+            mutation{
+                createBook(book:{
+                    title:"hibernate book",
+                    desc:"book desc hibernate",
+                    price:600,
+                    pages:123,
+                    author:"vikash"
+                }){
+                    id
+                    title
+                }
+            }
+4)Query POST: http://localhost:9090/graphql (getBookByIdAndAuthor(bookId:Int, author:String):BookOutput)
+            query{
+               getBookByIdAndAuthor(bookId:1,author:"Rakesh"){
+                id
+                title
+               }
+            }
+
+4)Query POST: http://localhost:9090/graphql (getBook(book:BookInput):[BookOutput])
+           query{
+               getBook(book:{
+                    title:"Think Java"
+               }){
+                 title
+                 desc
+               }
+           }
+
+    response: return list of objects
+          {
+              "data": {
+                  "getBook": [
+                      {
+                          "title": "Think Java",
+                          "desc": "java for learning"
+                      }
+                  ]
+              }
+          }

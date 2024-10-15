@@ -9,6 +9,7 @@ import lombok.Setter;
 public class BookInputDto {
     private String title;
     private String desc;
+    private Author author;
     private double price;
     private int pages;
 }

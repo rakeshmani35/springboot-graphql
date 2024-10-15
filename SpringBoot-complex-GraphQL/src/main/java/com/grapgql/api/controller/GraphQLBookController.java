@@ -17,6 +17,7 @@ import java.util.List;
 @Controller
 public class GraphQLBookController {
 
+    HttpGraphQlClient httpGraphQlClient;
 
     private BookService bookService;
 
@@ -32,6 +33,9 @@ public class GraphQLBookController {
         b.setTitle(book.getTitle());
         b.setDesc(book.getDesc());
         b.setPrice(book.getPrice());
+        List<Author> authors = new ArrayList<>();
+        authors.add(book.getAuthor());
+        b.setAuthors(authors);
         b.setPages(book.getPages());
         return bookService.create(b);
     }
@@ -60,6 +64,13 @@ public class GraphQLBookController {
     @Cacheable(key = "#book", value = "book")
     public Book findBooksByTitleAndPages(@Argument BookInputDto book) {
         return bookService.findBooksByTitleAndPages(book.getTitle(), book.getPages());
+    }
+
+
+    @QueryMapping("getBookByIdAndAuthor")
+    @Cacheable(key = "{#bookId, #author}", value = "book")
+    public Book getBookByIdAndAutor(@Argument int bookId, @Argument String author) {
+        return bookService.getBookByIdAndAutorName(bookId, author);
     }
 
 }

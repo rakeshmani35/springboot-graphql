@@ -45,4 +45,15 @@ public class BookServiceImpl implements BookService {
         return booksByTitleAndPages;
     }
 
+    @Override
+    public Book getBookByIdAndAutorName(int id, String author) {
+        List<Book> list = new ArrayList();
+        Book b = new Book();
+        b.setId(id);
+        b.setAuthor(author);
+        list.add(b);
+        list.add(b);
+
+        return bookRepository.findBooksByIdAndAuthor_Name(id, author);
+    }
 }

@@ -6,6 +6,7 @@ type Query{
   allBooks:[BookOutput]
   getBookById(bookId:Int):BookOutput
   getBook(book:BookInput):[BookOutput]
+  getBookByIdAndAuthor(bookId:Int, author:String):BookOutput
 }
 
 type BookOutput{
@@ -13,6 +14,7 @@ type BookOutput{
   title:String
   desc:String
   price:Float
+  author:[AuthorOutput]
   pages:Int
 }
 
@@ -20,6 +22,7 @@ type BookOutput{
 input BookInput{
     title:String
     desc:String
+    author:String
     price:Float
     pages:Int
 }
