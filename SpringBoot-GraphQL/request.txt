@@ -1,3 +1,6 @@
+================== H2===============
+http://localhost:
+
 =========== REST ==========================
 1) POST : http://localhost:9090/books
     {
@@ -22,9 +25,9 @@
         }
 
 
-2) QUERY POST: http://localhost:9090/graphql
+2) QUERY POST: http://localhost:9090/graphql (getBookById(bookId:Int):BookOutput)
             query{
-              getBook(bookId:1){
+              getBookById(bookId:1){
                 id
                 title
               }
@@ -43,10 +46,32 @@
                     title
                 }
             }
-4)Query POST: http://localhost:9090/graphql
+4)Query POST: http://localhost:9090/graphql (getBookByIdAndAuthor(bookId:Int, author:String):BookOutput)
             query{
                getBookByIdAndAuthor(bookId:1,author:"Rakesh"){
                 id
                 title
                }
             }
+
+4)Query POST: http://localhost:9090/graphql (getBook(book:BookInput):[BookOutput])
+           query{
+               getBook(book:{
+                    title:"Think Java"
+               }){
+                 title
+                 desc
+               }
+           }
+
+    response: return list of objects
+          {
+              "data": {
+                  "getBook": [
+                      {
+                          "title": "Think Java",
+                          "desc": "java for learning"
+                      }
+                  ]
+              }
+          }

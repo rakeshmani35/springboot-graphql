@@ -1,0 +1,5 @@
+type AuthorOutput{
+  id: ID!
+  name:String
+  product:Product
+}

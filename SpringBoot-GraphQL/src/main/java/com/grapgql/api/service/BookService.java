@@ -11,5 +11,10 @@ public interface BookService {
     public List<Book> getAll();
 
     public Book getBook(int id);
-    public Book getBookByIdAndAutor(int id, String author);
+
+    List<Book> getBookByTitle(String title);
+
+    Book findBooksByTitleAndPages(String title, int page);
+
+//    public Book getBookByIdAndAutorName(int id, String author);
 }

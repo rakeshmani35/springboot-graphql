@@ -1,21 +1,22 @@
 package com.grapgql.api.controller;
 
+import com.grapgql.api.entity.Author;
 import com.grapgql.api.entity.Book;
-import com.grapgql.api.helper.BookInput;
+import com.grapgql.api.helper.BookInputDto;
 import com.grapgql.api.service.BookService;
-import lombok.Getter;
-import lombok.Setter;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.graphql.client.HttpGraphQlClient;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
+//@EnableRedisRepositories(basePackages = "com.grapgql.api.config")
+//@EnableJpaRepositories(basePackages = "com.grapgql.api.repository")
 public class GraphQLBookController {
 
     HttpGraphQlClient httpGraphQlClient;
@@ -29,12 +30,14 @@ public class GraphQLBookController {
 
     //   @PostMapping
     @MutationMapping("createBook")
-    public Book create(@Argument BookInput book) {
+    public Book create(@Argument BookInputDto book) {
         Book b = new Book();
         b.setTitle(book.getTitle());
         b.setDesc(book.getDesc());
         b.setPrice(book.getPrice());
-        b.setAuthor(book.getAuthor());
+        List<Author> authors = new ArrayList<>();
+        authors.add(book.getAuthor());
+        b.setAuthors(authors);
         b.setPages(book.getPages());
         return bookService.create(b);
     }
@@ -47,15 +50,30 @@ public class GraphQLBookController {
     }
 
     // @GetMapping
-    @QueryMapping("getBook")
-    public Book getBook(@Argument int bookId) {
+    @QueryMapping("getBookById")
+    @Cacheable(key = "#bookId", value = "book")
+    public Book getBookById(@Argument int bookId) {
         return bookService.getBook(bookId);
     }
 
-    @QueryMapping("getBookByIdAndAuthor")
-    public Book getBookByIdAndAutor(@Argument int bookId, @Argument String author) {
-        return bookService.getBookByIdAndAutor(bookId,author);
+    @QueryMapping("getBook")
+    @Cacheable(key = "#book", value = "book")
+    public List<Book> getBook(@Argument BookInputDto book) {
+        return bookService.getBookByTitle(book.getTitle());
     }
+
+//    @QueryMapping("getBook")
+//    @Cacheable(key = "#book", value = "book")
+//    public Book findBooksByTitleAndPages(@Argument BookInputDto book) {
+//        return bookService.findBooksByTitleAndPages(book.getTitle(), book.getPages());
+//    }
+
+
+//    @QueryMapping("getBookByIdAndAuthor")
+//    @Cacheable(key = "{#bookId, #author}", value = "book")
+//    public Book getBookByIdAndAutor(@Argument int bookId, @Argument String author) {
+//        return bookService.getBookByIdAndAutorName(bookId, author);
+//    }
 
 }
 
